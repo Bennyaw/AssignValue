@@ -21,18 +21,18 @@ void throwError(int errorCode,char *format,...)
   char *buffer;
   Exception *ex = (Exception *)malloc(sizeof(Exception));
   ex->errorCode = errorCode;
-  
+
   va_start(valist,format);
   neededSize = vsnprintf(NULL,0,format,valist)+1;
   buffer = malloc(neededSize);
   vsnprintf(buffer,neededSize,format,valist);
-  
+
   va_end(valist);
-  
+
   ex->errorMsg = buffer;
-  
+
   printf(buffer);
-  
+
   Throw(ex);
 }
 */
@@ -42,9 +42,9 @@ void freeError(Exception *ex)
   {
     if(ex->errorMsg)
     {
-      free(ex->errorMsg);
-      free(ex); 
+      //free(ex->errorMsg);
+      free(ex);
     }
-   
+
   }
 }
