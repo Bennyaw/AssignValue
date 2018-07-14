@@ -98,8 +98,8 @@ void test_parseAndConvertToNum_given_string_with_character_return_0(void)
   char *str = "1a3";
   char *originalStr = str;
 
-  TEST_ASSERT_EQUAL(0,parseAndConvertToNum(&str));
-  TEST_ASSERT_EQUAL_PTR(originalStr,str);
+  TEST_ASSERT_EQUAL(1,parseAndConvertToNum(&str));//take the digit before character
+  TEST_ASSERT_EQUAL_PTR(originalStr+1,str);
 }
 
 void test_parseAndConvertToNum_given_string_with_space_infront_return_interger(void)
@@ -239,22 +239,21 @@ void test_parseTextAndAssignValues_given_text_without_assign_should_throw_ERR_UN
   }
 }
 
-void test_parseTextAndAssignValues_given_guava_23_cucumber_92_should_throw_ERR_UNKNOWN_VARIABLE(void) {
+void test_parseTextAndAssignValues_given_malform_ciku_without_number_should_throw_ERR_NOT_A_NUMBER(void) {
   CEXCEPTION_T e;
-  int guava = 0;
+  int ciku = 0;
   VariableMapping varTableMapping[] = {
-    {"guava", &guava},
+    {"ciku", &ciku},
     {NULL, NULL},
   };
-  char *line = "assign guava=23 cucumber=92";
+  char *line = "assign ciku =  durian = 6";
 
   Try {
     parseTextAndAssignValues(&line, varTableMapping);
-    TEST_FAIL_MESSAGE("Expect ERR_UNKNOWN_VARIABLE. But no exception thrown.");
+    TEST_FAIL_MESSAGE("Expect ERR_NOT_A_NUMBER. But no exception thrown.");
   } Catch(e) {
-    TEST_ASSERT_EQUAL(23, guava);
     printf(e->errorMsg);
-    TEST_ASSERT_EQUAL(ERR_UNKNOWN_VARIABLE, e->errorCode);
+    TEST_ASSERT_EQUAL(ERR_NOT_A_NUMBER, e->errorCode);
     freeError(e);
   }
 }
@@ -278,21 +277,22 @@ void test_parseTextAndAssignValues_given_malform_pineapple_without_equal_sign_sh
   }
 }
 
-void test_parseTextAndAssignValues_given_malform_ciku_without_number_should_throw_ERR_NOT_A_NUMBER(void) {
+void test_parseTextAndAssignValues_given_guava_23_cucumber_92_should_throw_ERR_UNKNOWN_VARIABLE(void) {
   CEXCEPTION_T e;
-  int ciku = 0;
+  int guava = 0;
   VariableMapping varTableMapping[] = {
-    {"ciku", &ciku},
+    {"guava", &guava},
     {NULL, NULL},
   };
-  char *line = "assign ciku =  durian = 6";
+  char *line = "assign guava=23 cucumber=92";
 
   Try {
     parseTextAndAssignValues(&line, varTableMapping);
-    TEST_FAIL_MESSAGE("Expect ERR_NOT_A_NUMBER. But no exception thrown.");
+    TEST_FAIL_MESSAGE("Expect ERR_UNKNOWN_VARIABLE. But no exception thrown.");
   } Catch(e) {
+    TEST_ASSERT_EQUAL(23, guava);
     printf(e->errorMsg);
-    TEST_ASSERT_EQUAL(ERR_NOT_A_NUMBER, e->errorCode);
+    TEST_ASSERT_EQUAL(ERR_UNKNOWN_VARIABLE, e->errorCode);
     freeError(e);
   }
 }
