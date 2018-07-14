@@ -39,8 +39,13 @@ int parseAndCompare(char **linePtr, char *cmpStr)
     {
       return 1;
     }
-    else if(isdigit(**linePtr))
-    {
+    else if((**linePtr) == '=')
+    {/*
+      while(isspace(**linePtr)) // check for space after '=' and move
+      {                         //pointer to nearest integer for checking
+        (*linePtr) ++;
+        stepCount++;
+      }*/
       return 1;
     }
     else if((*cmpStr) == '\0') //finish checking string
@@ -108,7 +113,7 @@ int parseAndConvertToNum(char **linePtr)
 
 int parseTextAndAssignValues(char **linePtr, VariableMapping *varPtr)
 {
-  int getVarSize = 0;
+  int getVarAmount = 0;
 
   if(varPtr == NULL) //table is missing
   {
@@ -122,19 +127,28 @@ int parseTextAndAssignValues(char **linePtr, VariableMapping *varPtr)
   {
     if(parseAndCompare(linePtr,"assign"))
     {
-      int getVarAmount = 0;
-      while(varPtr->name != NULL) //check how many variable inside table
-      {
-        varPtr->name++;
-        getVarAmount++;
-      }
-      *varPtr->name = *varPtr->name - getVarAmount ;  //pointer move back to first varaible
-
         if(parseAndCompare(linePtr,varPtr->name)) //check variable
         {
           if(parseAndCompare(linePtr,"="))// compare =
           {
-            //*varPtr->stotage = parseAndCompare()
+            if(isdigit(**linePtr))// confirm the is value after '='
+            {
+              while(varPtr->name != NULL)// if variable not NULL, keep assgin value
+              {
+                varPtr->storage = parseAndConvertToNum(linePtr);
+                varPtr->name++;
+                getVarAmount++;
+              }
+              *varPtr->name = *varPtr->name - getVarAmount;
+              if(varPtr->name == NULL && (**linePtr) != '\0')
+              {
+                throwSimpleError(ERR_UNKNOWN_VARIABLE," Error : Variable is missing or not match with the variable table.");
+              }
+            }
+            else
+            {
+              throwSimpleError(ERR_NOT_A_NUMBER," Error : No number assign to variable.");
+            }
           }
           else
           {

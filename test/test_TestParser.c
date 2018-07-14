@@ -238,7 +238,7 @@ void test_parseTextAndAssignValues_given_text_without_assign_should_throw_ERR_UN
     freeError(e);
   }
 }
-/*
+
 void test_parseTextAndAssignValues_given_guava_23_cucumber_92_should_throw_ERR_UNKNOWN_VARIABLE(void) {
   CEXCEPTION_T e;
   int guava = 0;
@@ -257,8 +257,8 @@ void test_parseTextAndAssignValues_given_guava_23_cucumber_92_should_throw_ERR_U
     TEST_ASSERT_EQUAL(ERR_UNKNOWN_VARIABLE, e->errorCode);
     freeError(e);
   }
-}*/
-/*
+}
+
 void test_parseTextAndAssignValues_given_malform_pineapple_without_equal_sign_should_throw_ERR_MALFORM_ASSIGN(void) {
   CEXCEPTION_T e;
   int pineapple = 0;
@@ -276,8 +276,8 @@ void test_parseTextAndAssignValues_given_malform_pineapple_without_equal_sign_sh
     TEST_ASSERT_EQUAL(ERR_MALFORM_ASSIGN, e->errorCode);
     freeError(e);
   }
-}*/
-/*
+}
+
 void test_parseTextAndAssignValues_given_malform_ciku_without_number_should_throw_ERR_NOT_A_NUMBER(void) {
   CEXCEPTION_T e;
   int ciku = 0;
@@ -296,4 +296,3 @@ void test_parseTextAndAssignValues_given_malform_ciku_without_number_should_thro
     freeError(e);
   }
 }
-*/
