@@ -177,49 +177,7 @@ void test_parseTextAndAssignValues_given_input_command_is_NULL_should_do_nothing
     freeError(e);
   }
 }
-/*
-// assign orange  = 21346 apple = 1 lemon=10
-void test_parseTextAndAssignValues_given_orange_21346_apple_1_lemon_10_should_assigned_correctly(void) {
-  CEXCEPTION_T e;
-  int orange = 0, apple = 0, lemon = 0;
-  VariableMapping varTableMapping[] = {
-    {"apple", &apple},
-    {"orange", &orange},
-    {"lemon", &lemon},
-    {NULL, NULL},
-  };
-  char *line = "assign orange  = 21346 apple = 1 lemon=10";
 
-  Try {
-    parseTextAndAssignValues(&line, varTableMapping);
-
-    TEST_ASSERT_EQUAL(21346, orange);
-    TEST_ASSERT_EQUAL(1, apple);
-    TEST_ASSERT_EQUAL(10, lemon);
-  } Catch(e) {
-    printf(e->errorMsg);
-    freeError(e);
-  }
-}
-
-void test_parseTextAndAssignValues_given_melon_and_value_with_trailing_spaces_should_parse_properly(void) {
-  CEXCEPTION_T e;
-  int melon = 0;
-  VariableMapping varTableMapping[] = {
-    {"melon  ", &melon},
-    {NULL, NULL},
-  };
-  char *line = "assign melon = 89   ";
-
-  Try {
-    parseTextAndAssignValues(&line, varTableMapping);
-    TEST_ASSERT_EQUAL(89, melon);
-  } Catch(e) {
-    printf(e->errorMsg);
-    freeError(e);
-  }
-}
-*/
 void test_parseTextAndAssignValues_given_text_without_assign_should_throw_ERR_UNKNOWN_COMMAND(void) {
   CEXCEPTION_T e;
   int papaya = 0;
@@ -293,6 +251,50 @@ void test_parseTextAndAssignValues_given_guava_23_cucumber_92_should_throw_ERR_U
     TEST_ASSERT_EQUAL(23, guava);
     printf(e->errorMsg);
     TEST_ASSERT_EQUAL(ERR_UNKNOWN_VARIABLE, e->errorCode);
+    freeError(e);
+  }
+}
+
+
+// assign orange  = 21346 apple = 1 lemon=10
+void test_parseTextAndAssignValues_given_orange_21346_apple_1_lemon_10_should_assigned_correctly(void) {
+  CEXCEPTION_T e;
+  int orange = 0, apple = 0, lemon = 0;
+  VariableMapping varTableMapping[] = {
+    {"apple", &apple},
+    {"orange", &orange},
+    {"lemon", &lemon},
+    {NULL, NULL},
+  };
+  char *line = "assign apple  = 21346 orange = 1 lemon=10";
+
+  Try {
+    parseTextAndAssignValues(&line, varTableMapping);
+
+    TEST_ASSERT_EQUAL(21346, apple);
+    TEST_ASSERT_EQUAL(1, orange);
+    TEST_ASSERT_EQUAL(10, lemon);
+  } Catch(e) {
+    printf(e->errorMsg);
+    freeError(e);
+  }
+}
+
+
+void test_parseTextAndAssignValues_given_melon_and_value_with_trailing_spaces_should_parse_properly(void) {
+  CEXCEPTION_T e;
+  int melon = 0;
+  VariableMapping varTableMapping[] = {
+    {"melon  ", &melon},
+    {NULL, NULL},
+  };
+  char *line = "assign melon = 89   ";
+
+  Try {
+    parseTextAndAssignValues(&line, varTableMapping);
+    TEST_ASSERT_EQUAL(89, melon);
+  } Catch(e) {
+    printf(e->errorMsg);
     freeError(e);
   }
 }

@@ -139,7 +139,7 @@ int parseTextAndAssignValues(char **linePtr, VariableMapping *varPtr)
         reverseVarPtr--;
       }
 
-      while (linePtr != '\0')
+      while ((**linePtr) != '\0')
       {
         if(parseAndCompare(linePtr,varPtr->name) || (varPtr->name == NULL)) //check variable
         {
