@@ -73,20 +73,15 @@ int parseAndCompare(char **linePtr, char *cmpStr)
     }
       else
       {
-        *linePtr = *linePtr - stepCount;
-        return 0;
+        *linePtr = *linePtr - stepCount;  //found error and move pointer back
+        return 0;                         //where it start
       }
     }
 
 
   return 1;
 }
-/**
-* parse amd connect the first string number to value
-* the value is returned if the number is successfully
-* connected. If thre is no number, ERR_NOT_A_NUMBER
-* is thrown
-*/
+
 int parseAndConvertToNum(char **linePtr)
 {
   int num = 0,stepCount = 0;
@@ -111,7 +106,7 @@ int parseAndConvertToNum(char **linePtr)
 
 int parseTextAndAssignValues(char **linePtr, VariableMapping *varPtr)
 {
-  int getVarAmount = 0;
+  VariableMapping *originalValue = varPtr;
   int varSize = 0;
   int reverseVarPtr = 0;
 
@@ -127,21 +122,13 @@ int parseTextAndAssignValues(char **linePtr, VariableMapping *varPtr)
   {
     if(parseAndCompare(linePtr,"assign"))
     {
-      while(varPtr->name != NULL) //check variable size
-      {
-        varPtr++;
-  //      getVarAmount++;
-        reverseVarPtr++;
-      }
-      while(reverseVarPtr != 0)
-      {
-        varPtr--;
-        reverseVarPtr--;
-      }
-
       while ((**linePtr) != '\0')
       {
-        if(parseAndCompare(linePtr,varPtr->name) || (varPtr->name == NULL)) //check variable
+        if(varPtr->name == NULL)  // check whether variable is missing or not
+        {
+          throwSimpleError(ERR_UNKNOWN_VARIABLE," Error : Variable is missing or not match with the variable table.");
+        }
+        else if(parseAndCompare(linePtr,varPtr->name) ) //check variable matching
         {
           if(parseAndCompare(linePtr,"="))// compare =
           {
@@ -153,11 +140,7 @@ int parseTextAndAssignValues(char **linePtr, VariableMapping *varPtr)
             if(isdigit(**linePtr))// confirm the is value after '='
             {
               *varPtr->storage = parseAndConvertToNum(linePtr);
-              varPtr++; //go to next variable //assign value into variable
-              if((**linePtr) != '\0' && varPtr->name == NULL)
-              {
-                throwSimpleError(ERR_UNKNOWN_VARIABLE," Error : Variable is missing or not match with the variable table.");
-              }
+              varPtr = originalValue; //reset pointervalue
             }
             else
             {
@@ -169,10 +152,9 @@ int parseTextAndAssignValues(char **linePtr, VariableMapping *varPtr)
             throwSimpleError(ERR_MALFORM_ASSIGN," Error : Equal sign not found.");
           }
         }
-        else
+        else  // if not match go to next variable
         {
-          throwSimpleError(ERR_UNKNOWN_VARIABLE," Error : Variable is missing or not match with the variable table.");
-
+            varPtr++;
         }
 
 

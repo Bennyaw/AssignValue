@@ -257,7 +257,7 @@ void test_parseTextAndAssignValues_given_guava_23_cucumber_92_should_throw_ERR_U
 
 
 // assign orange  = 21346 apple = 1 lemon=10
-void test_parseTextAndAssignValues_given_orange_21346_apple_1_lemon_10_should_assigned_correctly(void) {
+void test_parseTextAndAssignValues_given_apple_21346_orange_1_lemon_10_should_assigned_correctly(void) {
   CEXCEPTION_T e;
   int orange = 0, apple = 0, lemon = 0;
   VariableMapping varTableMapping[] = {
@@ -293,6 +293,29 @@ void test_parseTextAndAssignValues_given_melon_and_value_with_trailing_spaces_sh
   Try {
     parseTextAndAssignValues(&line, varTableMapping);
     TEST_ASSERT_EQUAL(89, melon);
+  } Catch(e) {
+    printf(e->errorMsg);
+    freeError(e);
+  }
+}
+
+void test_parseTextAndAssignValues_given_cherry_346_rambutan_178_lime_15_should_assigned_correctly(void) {
+  CEXCEPTION_T e;
+  int cherry = 0, rambutan = 0, lime = 0;
+  VariableMapping varTableMapping[] = {
+    {"cherry", &cherry},
+    {"rambutan", &rambutan},
+    {"lime", &lime},
+    {NULL, NULL},
+  };
+  char *line = "assign rambutan  = 178 cherry = 346 lime=15";
+
+  Try {
+    parseTextAndAssignValues(&line, varTableMapping);
+
+    TEST_ASSERT_EQUAL(178, rambutan);
+    TEST_ASSERT_EQUAL(346, cherry);
+    TEST_ASSERT_EQUAL(15, lime);
   } Catch(e) {
     printf(e->errorMsg);
     freeError(e);
